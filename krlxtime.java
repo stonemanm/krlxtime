@@ -2,14 +2,101 @@
  * Displays the current class period at Carleton College. It's hardly the most
  * sophisticated program, but it'll look nice on my desktop.
  * 
- * Last modified 2015-04-13
+ * Last modified 2015-04-15
  * @author Michael Stoneman
- * @version 0.0.0? I guess?
+ * @version 0.0.1
  */
 
-public class krlxtime {
-	
+import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
+public class krlxtime {
+	/**
+	 * @return the current time, as a LocalTime object.
+	 */
+	public static LocalTime getTime() {
+		return LocalTime.now();
+	}
+
+	/**
+	 * Creates a list of krlxCourse objects corresponding to the day's schedule.
+	 * 
+	 * @return an ArrayList of krlxCourse objects.
+	 */
+	public static ArrayList<krlxCourse> getSchedule() {
+		int day = LocalDate.now().getDayOfWeek().getValue();
+		List<krlxCourse> today = new ArrayList<krlxCourse>();
+		// Monday and Wednesday
+		if (day == 1 || day == 3) {
+			today.add(new krlxCourse(" 1a ", "8:30", 70));
+			today.add(new krlxCourse(" 2a ", "9:50", 70));
+			today.add(new krlxCourse(" 3a ", "11:10", 70));
+			today.add(new krlxCourse(" 4a ", "12:30", 70));
+			today.add(new krlxCourse(" 5a ", "1:50", 70));
+			today.add(new krlxCourse(" 6a ", "3:10", 70));
+		} else if (day == 2 || day == 4) {
+			today.add(new krlxCourse("1/2c", "8:15", 105));
+			today.add(new krlxCourse("2/3c", "10:10", 105));
+			today.add(new krlxCourse(" CT ", "12:05", 60));
+			today.add(new krlxCourse("4/5c", "1:15", 105));
+			today.add(new krlxCourse("5/6c", "3:10", 105));
+		} else if (day == 5) {
+			today.add(new krlxCourse(" 1a ", "8:30", 60));
+			today.add(new krlxCourse(" 2a ", "9:40", 60));
+			today.add(new krlxCourse(" CV ", "10:50", 60));
+			today.add(new krlxCourse(" 3a ", "12:00", 60));
+			today.add(new krlxCourse(" 4a ", "1:10", 60));
+			today.add(new krlxCourse(" 5a ", "2:20", 60));
+			today.add(new krlxCourse(" 6a ", "3:30", 60));
+		}
+		return today;
+	}
+
+	/**
+	 * Displays the name of the current class time, or a countdown to the next
+	 * class time.
+	 * 
+	 * @return some weird things. This isn't the nicest program.
+	 */
+	public static String[] outputArray(ArrayList<krlxCourse> schedule) {
+		String[] output = new String[3];
+		LocalTime now = getTime();
+		int i = 0;
+		while (i < schedule.size() && schedule.get(i).getStart().compareTo(now) != 1) {
+			i++;
+		} // i is the index of the upcoming class period.
+		if (i == 0) {
+			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
+			if (until_class <= 60) {
+				output[0] =  " " + String.format("%02d", until_class) + " ";
+				output[1] = "minutes until " + schedule.get(i).getName() + ".";
+				output[2] = "Classes have yet to begin.";
+			} else {
+				output[0] = " -- ";
+				output[1] = "minutes until class starts.";
+				output[2] = "Classes have yet to begin.";
+			}
+		} else if (i < schedule.size()) {
+			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
+			if (schedule.get(i-1).getEnd().compareTo(now) == 1) {
+				output[0] = " " + String.format("%02d", until_class) + " ";
+				output[1] = "minutes until " + schedule.get(i).getName() + ".";
+				output[2] = "Classes currently taking place.";
+			} else {
+				output[0] = schedule.get(i-1).getName();
+				output[1] = "ends in " + now.until(schedule.get(i-1).getEnd()) + "minutes.";
+				output[2] = "(" + until_start + " minutes until " + schedule.get(i).getName() + ".";
+			}
+		} else {
+			output[0] = " -- ";
+			output[1] = "minutes until class starts.";
+			output[2] = "Classes are over for the day.";
+		}
+
+	}
 
 	/**
 	 * Let's see. What do I actually want for the output?
@@ -28,6 +115,16 @@ public class krlxtime {
 	 * When the day is over, go to -- mode.
 	 */
 	public static void main(String[] args) {
-
+		ArrayList<krlxCourse> schedule = getSchedule();
+		String[] output = outputArray;
+		if (args[0].compareTo("-0")) {
+			System.out.println(output[0]);
+		} else if (args[0].compareTo("-1")) {
+			System.out.println(output[1]);
+		} else if (args[0].compareTo("-2")) {
+			System.out.println(output[2]);
+		} else {
+			System.out.println("Not a valid use case.");
+		}
 	}
 }
