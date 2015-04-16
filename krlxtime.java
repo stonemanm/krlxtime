@@ -4,7 +4,7 @@
  * 
  * Last modified 2015-04-15
  * @author Michael Stoneman
- * @version 0.0.1
+ * @version 0.1.0
  */
 
 import java.util.ArrayList;
@@ -28,29 +28,29 @@ public class krlxtime {
 	 */
 	public static ArrayList<krlxCourse> getSchedule() {
 		int day = LocalDate.now().getDayOfWeek().getValue();
-		List<krlxCourse> today = new ArrayList<krlxCourse>();
+		ArrayList<krlxCourse> today = new ArrayList<krlxCourse>();
 		// Monday and Wednesday
 		if (day == 1 || day == 3) {
-			today.add(new krlxCourse(" 1a ", "8:30", 70));
-			today.add(new krlxCourse(" 2a ", "9:50", 70));
+			today.add(new krlxCourse(" 1a ", "08:30", 70));
+			today.add(new krlxCourse(" 2a ", "09:50", 70));
 			today.add(new krlxCourse(" 3a ", "11:10", 70));
 			today.add(new krlxCourse(" 4a ", "12:30", 70));
-			today.add(new krlxCourse(" 5a ", "1:50", 70));
-			today.add(new krlxCourse(" 6a ", "3:10", 70));
+			today.add(new krlxCourse(" 5a ", "13:50", 70));
+			today.add(new krlxCourse(" 6a ", "15:10", 70));
 		} else if (day == 2 || day == 4) {
-			today.add(new krlxCourse("1/2c", "8:15", 105));
+			today.add(new krlxCourse("1/2c", "08:15", 105));
 			today.add(new krlxCourse("2/3c", "10:10", 105));
 			today.add(new krlxCourse(" CT ", "12:05", 60));
-			today.add(new krlxCourse("4/5c", "1:15", 105));
-			today.add(new krlxCourse("5/6c", "3:10", 105));
+			today.add(new krlxCourse("4/5c", "13:15", 105));
+			today.add(new krlxCourse("5/6c", "15:10", 105));
 		} else if (day == 5) {
-			today.add(new krlxCourse(" 1a ", "8:30", 60));
-			today.add(new krlxCourse(" 2a ", "9:40", 60));
+			today.add(new krlxCourse(" 1a ", "08:30", 60));
+			today.add(new krlxCourse(" 2a ", "09:40", 60));
 			today.add(new krlxCourse(" CV ", "10:50", 60));
 			today.add(new krlxCourse(" 3a ", "12:00", 60));
-			today.add(new krlxCourse(" 4a ", "1:10", 60));
-			today.add(new krlxCourse(" 5a ", "2:20", 60));
-			today.add(new krlxCourse(" 6a ", "3:30", 60));
+			today.add(new krlxCourse(" 4a ", "13:10", 60));
+			today.add(new krlxCourse(" 5a ", "14:20", 60));
+			today.add(new krlxCourse(" 6a ", "15:30", 60));
 		}
 		return today;
 	}
@@ -87,15 +87,15 @@ public class krlxtime {
 				output[2] = "Classes currently taking place.";
 			} else {
 				output[0] = schedule.get(i-1).getName();
-				output[1] = "ends in " + now.until(schedule.get(i-1).getEnd()) + "minutes.";
-				output[2] = "(" + until_start + " minutes until " + schedule.get(i).getName() + ".";
+				output[1] = "ends in " + now.until(schedule.get(i-1).getEnd(), MINUTES) + "minutes.";
+				output[2] = "(" + until_class + " minutes until " + schedule.get(i).getName() + ".";
 			}
 		} else {
 			output[0] = " -- ";
 			output[1] = "minutes until class starts.";
 			output[2] = "Classes are over for the day.";
 		}
-
+		return output;
 	}
 
 	/**
@@ -116,12 +116,12 @@ public class krlxtime {
 	 */
 	public static void main(String[] args) {
 		ArrayList<krlxCourse> schedule = getSchedule();
-		String[] output = outputArray;
-		if (args[0].compareTo("-0")) {
+		String[] output = outputArray(schedule);
+		if (args[0].compareTo("-0") == 0) {
 			System.out.println(output[0]);
-		} else if (args[0].compareTo("-1")) {
+		} else if (args[0].compareTo("-1") == 0) {
 			System.out.println(output[1]);
-		} else if (args[0].compareTo("-2")) {
+		} else if (args[0].compareTo("-2") == 0) {
 			System.out.println(output[2]);
 		} else {
 			System.out.println("Not a valid use case.");
