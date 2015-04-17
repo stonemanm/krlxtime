@@ -2,9 +2,9 @@
  * Displays the current class period at Carleton College. It's hardly the most
  * sophisticated program, but it'll look nice on my desktop.
  * 
- * Last modified 2015-04-15
+ * Last modified 2015-04-17
  * @author Michael Stoneman
- * @version 0.1.0
+ * @version 0.1.1
  */
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class krlxtime {
 			}
 		} else if (i < schedule.size()) {
 			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
-			if (schedule.get(i-1).getEnd().compareTo(now) == 1) {
+			if (schedule.get(i-1).getEnd().compareTo(now) != 1) {
 				output[0] = " " + String.format("%02d", until_class) + " ";
 				output[1] = "minutes until " + schedule.get(i).getName() + ".";
 				output[2] = "Classes currently taking place.";
