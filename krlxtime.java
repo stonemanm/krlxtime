@@ -92,7 +92,7 @@ public class krlxtime {
 			}
 		} else {
 			output[0] = " -- ";
-			output[1] = "minutes until class starts.";
+			output[1] = "";
 			output[2] = "Classes are over for the day.";
 		}
 		return output;
