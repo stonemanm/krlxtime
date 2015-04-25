@@ -2,9 +2,9 @@
  * Displays the current class period at Carleton College. It's hardly the most
  * sophisticated program, but it'll look nice on my desktop.
  * 
- * Last modified 2015-04-17
+ * Last modified 2015-04-25
  * @author Michael Stoneman
- * @version 0.1.1
+ * @version 0.3.0
  */
 
 import java.util.ArrayList;
@@ -62,38 +62,44 @@ public class krlxtime {
 	 * @return some weird things. This isn't the nicest program.
 	 */
 	public static String[] outputArray(ArrayList<krlxCourse> schedule) {
+		int day = LocalDate.now().getDayOfWeek().getValue();
 		String[] output = new String[3];
 		LocalTime now = getTime();
 		int i = 0;
 		while (i < schedule.size() && schedule.get(i).getStart().compareTo(now) != 1) {
 			i++;
 		} // i is the index of the upcoming class period.
+		if (day == 6 || day == 7) {
+			output[0] = " -- ";
+			output[1] = "";
+			output[2] = "(Weekend - no classes.)";
+		}
 		if (i == 0) {
 			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
 			if (until_class <= 60) {
 				output[0] =  " " + String.format("%02d", until_class) + " ";
-				output[1] = "minutes until " + schedule.get(i).getName() + ".";
-				output[2] = "Classes have yet to begin.";
+				output[1] = "minutes until " + schedule.get(i).getShortName() + ".";
+				output[2] = "(Classes have yet to begin.)";
 			} else {
 				output[0] = " -- ";
-				output[1] = "minutes until class starts.";
-				output[2] = "Classes have yet to begin.";
+				output[1] = "";
+				output[2] = "(Classes have yet to begin.)";
 			}
 		} else if (i < schedule.size()) {
 			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
 			if (schedule.get(i-1).getEnd().compareTo(now) != 1) {
 				output[0] = " " + String.format("%02d", until_class) + " ";
-				output[1] = "minutes until " + schedule.get(i).getName() + ".";
-				output[2] = "Classes currently taking place.";
+				output[1] = "minutes until " + schedule.get(i).getShortName() + ".";
+				output[2] = "(Classes currently taking place.)";
 			} else {
 				output[0] = schedule.get(i-1).getName();
-				output[1] = "ends in " + now.until(schedule.get(i-1).getEnd(), MINUTES) + "minutes.";
-				output[2] = "(" + until_class + " minutes until " + schedule.get(i).getName() + ".";
+				output[1] = "ends in " + now.until(schedule.get(i-1).getEnd(), MINUTES) + " minutes.";
+				output[2] = "(" + until_class + " minutes until " + schedule.get(i).getShortName() + ".)";
 			}
 		} else {
 			output[0] = " -- ";
 			output[1] = "";
-			output[2] = "Classes are over for the day.";
+			output[2] = "(Classes are over for the day.)";
 		}
 		return output;
 	}
