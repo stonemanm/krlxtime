@@ -4,7 +4,7 @@
  * 
  * Last modified 2015-04-25
  * @author Michael Stoneman
- * @version 0.3.0
+ * @version 0.3.1
  */
 
 import java.util.ArrayList;
@@ -62,18 +62,12 @@ public class krlxtime {
 	 * @return some weird things. This isn't the nicest program.
 	 */
 	public static String[] outputArray(ArrayList<krlxCourse> schedule) {
-		int day = LocalDate.now().getDayOfWeek().getValue();
 		String[] output = new String[3];
 		LocalTime now = getTime();
 		int i = 0;
 		while (i < schedule.size() && schedule.get(i).getStart().compareTo(now) != 1) {
 			i++;
 		} // i is the index of the upcoming class period.
-		if (day == 6 || day == 7) {
-			output[0] = " -- ";
-			output[1] = "";
-			output[2] = "(Weekend - no classes.)";
-		}
 		if (i == 0) {
 			long until_class = now.until(schedule.get(i).getStart(), MINUTES);
 			if (until_class <= 60) {
@@ -121,9 +115,20 @@ public class krlxtime {
 	 * When the day is over, go to -- mode.
 	 */
 	public static void main(String[] args) {
-		ArrayList<krlxCourse> schedule = getSchedule();
-		String[] output = outputArray(schedule);
-		if (args[0].compareTo("-0") == 0) {
+		int day = LocalDate.now().getDayOfWeek().getValue();
+		String[] output = null;
+		if (day == 6 || day == 7) {
+			output = new String[3];
+			output[0] = " -- ";
+			output[1] = "";
+			output[2] = "(Weekend - no classes.)";
+		} else {
+			ArrayList<krlxCourse> schedule = getSchedule();
+			output = outputArray(schedule);
+		}
+		if (args.length == 0) {
+			System.out.println("Not a valid use case.");
+		} else if (args[0].compareTo("-0") == 0) {
 			System.out.println(output[0]);
 		} else if (args[0].compareTo("-1") == 0) {
 			System.out.println(output[1]);
