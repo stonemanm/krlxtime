@@ -2,7 +2,7 @@
  * Stores the name of a course slot and LocalTime objects corresponding to its
  * start time and end time. A helper class for krlxtime.
  * 
- * Last modified 2015-04-15
+ * Last modified 2015-04-20
  * @author Michael Stoneman
  */
 
@@ -26,6 +26,8 @@ public class krlxCourse {
 	public void setEnd(String end) { this.end = LocalTime.parse(end); }
 
 	public String getName() { return this.name; }
+
+	public String getShortName() { return this.name.replaceAll("\\s",""); }
 
 	public LocalTime getStart() { return this.start; }
 
