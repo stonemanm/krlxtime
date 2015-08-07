@@ -8,9 +8,9 @@ Translates the current time into the Carleton schedule. Designed for use with Ge
 
 Compile the java files, then open a shell script in GeekTool and enter the following...
 
-'''bash
+```bash
 java -cp /path/to/krlxtime krlxtime -n
-'''
+```
 
 ...where n is replaced with 0, 1, or 2.
 
