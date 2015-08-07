@@ -1,10 +1,10 @@
 /**
- * Displays the current class period at Carleton College. It's hardly the most
- * sophisticated program, but it'll look nice on my desktop.
+ * Displays the current class period at Carleton College.
  * 
- * Last modified 2015-04-25
+ * Last modified 2015-08-07
  * @author Michael Stoneman
- * @version 0.3.1
+ * @version 1.0.0
+ * @license MIT – more info in README.md
  */
 
 import java.util.ArrayList;
